@@ -1,0 +1,331 @@
+﻿<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>Virtual Umroh — Mobile Demo</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tailwind for quick utilities -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- A-Frame (360 + WebXR) -->
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+
+  <style>
+    /* Mobile-first UI polish */
+    :root{--card-radius:16px;}
+    body { background: linear-gradient(180deg,#f8fafc,#eef2ff); font-family: system-ui, -apple-system, Roboto, 'Segoe UI', Arial;}
+    .app-shell { max-width:900px; margin:8px auto; padding:10px; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    header h1 { font-size:1.05rem; margin:0; }
+    .vr-canvas { width:100%; height:56vh; border-radius:var(--card-radius); overflow:hidden; box-shadow:0 6px 22px rgba(15,23,42,0.08); background:#000; }
+    .controls .btn { min-width:110px; }
+    .step-card { min-height:120px; border-radius:var(--card-radius); }
+    .small-note { font-size:0.82rem; color:#475569; }
+    .bottom-bar { position:fixed; left:0; right:0; bottom:0; background:rgba(255,255,255,0.98); border-top:1px solid #e6e9ef; padding:8px; display:flex; gap:8px; justify-content:center; z-index:60; }
+    @media(min-width:992px){ .bottom-bar { display:none; } .vr-canvas{height:62vh;} }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <h1 class="h5">Virtual Umroh — Demo</h1>
+      <div class="d-flex gap-2">
+        <button id="saveBtn" class="btn btn-sm btn-primary">Simpan</button>
+        <button id="loadBtn" class="btn btn-sm btn-outline-secondary">Muat</button>
+      </div>
+    </header>
+
+    <main class="mt-3 grid gap-3">
+      <section class="row">
+        <div class="col-12 col-lg-8">
+          <div class="vr-canvas">
+            <a-scene vr-mode-ui="enterVRButton: true;" embedded renderer="antialias: true;">
+              <a-assets>
+                <!-- Gambar 360° Ka'bah sesuai URL yang Anda berikan -->
+                <img id="kaabahImage"
+                     src="https://l13.alamy.com/zooms/9/e6aa110f4d1740479bb32a44f55742d3/r9t3n1.jpg"
+                     crossorigin="anonymous"
+                     alt="Ka'bah 360" />
+              </a-assets>
+
+              <a-sky id="sky" src="#kaabahImage"></a-sky>
+
+              <!-- Camera and gaze cursor for mobile -->
+              <a-entity camera look-controls position="0 1.6 0">
+                <a-entity cursor="fuse: true; fuseTimeout: 800"
+                          position="0 0 -1"
+                          geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+                          material="color: white; shader: flat"></a-entity>
+              </a-entity>
+            </a-scene>
+          </div>
+
+          <div class="mt-2 d-flex gap-2 flex-wrap controls">
+            <button id="enterVr" class="btn btn-success">Masuk Mode VR</button>
+            <button id="toggleAutoTalbiyah" class="btn btn-outline-info">Auto Talbiyah</button>
+            <button id="playTalbiyah" class="btn btn-outline-primary">Mainkan Talbiyah</button>
+            <button id="stopTalbiyah" class="btn btn-outline-danger">Stop</button>
+
+            <!-- Upload talbiyah (user) -->
+            <label class="btn btn-outline-secondary mb-0">
+              <input id="uploadTalbiyah" type="file" accept="audio/*" hidden> Upload Audio
+            </label>
+
+            <!-- Upload doa untuk langkah saat ini -->
+            <button id="uploadDoaBtn" class="btn btn-outline-secondary">Upload Doa Step</button>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <div class="card step-card shadow-sm p-2">
+            <div class="card-body p-2">
+              <h6 class="m-0">Tahapan Virtual Umroh</h6>
+              <p class="small-note mt-1">Ikuti langkah, dengarkan doa, dan simpan progres Anda.</p>
+
+              <ol id="stepsList" class="list-group list-group-numbered mt-2">
+                <!-- injected by JS -->
+              </ol>
+
+              <div class="mt-3 d-flex justify-content-between">
+                <button id="prevStep" class="btn btn-sm btn-outline-primary">Sebelumnya</button>
+                <button id="nextStep" class="btn btn-sm btn-primary">Berikutnya</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-3 shadow-sm">
+            <div class="card-body p-2">
+              <h6 class="m-0">Panduan Doa</h6>
+              <div id="doaText" class="mt-2" style="white-space:pre-wrap;">Pilih langkah untuk melihat doa.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section>
+        <div class="card shadow-sm">
+          <div class="card-body p-2">
+            <h6 class="m-0">Pengaturan</h6>
+            <p class="small-note mt-1">Jika talbiyah tidak otomatis terdengar, tekan tombol Play. Untuk kualitas terbaik gunakan koneksi stabil.</p>
+            <div class="row g-2 mt-2">
+              <div class="col-6 col-md-4">
+                <label class="form-label small">Volume</label>
+                <input id="volume" type="range" min="0" max="1" step="0.01" value="0.9" class="form-range">
+              </div>
+              <div class="col-6 col-md-4 d-flex align-items-center">
+                <label class="form-label small me-2 mb-0">Loop Talbiyah</label>
+                <input id="loopTalbiyah" type="checkbox" checked>
+              </div>
+              <div class="col-12 col-md-4 d-flex align-items-center">
+                <label class="form-label small me-2 mb-0">Gunakan TTS</label>
+                <input id="useTTS" type="checkbox" checked>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-3 text-center small text-muted">Virtual Umroh — Demo. Ganti aset dengan versi final Anda.</footer>
+  </div>
+
+  <!-- mobile bottom bar with essential nav (for phones) -->
+  <div class="bottom-bar d-lg-none">
+    <button class="btn btn-sm btn-outline-primary" id="prevBottom">Sebelumnya</button>
+    <button class="btn btn-sm btn-primary" id="nextBottom">Berikutnya</button>
+    <button class="btn btn-sm btn-success" id="playBottom">Doa</button>
+  </div>
+
+  <script>
+    // --- Data: steps with full doa texts (Indonesian short guidance) ---
+    const STEPS = [
+      {
+        id: 'niat',
+        title: 'Niat & Wudhu',
+        doa: `Niat: Labbaika Allahumma ‘umratan.\nDoa Wudhu singkat: Bismillah. Allahumma inni as'aluka hubbaka wa hubba man yuhibbuka.\nDoa ringkas setelah wudhu: Asyhadu an la ilaha illallah...`,
+      },
+      {
+        id: 'tawaf',
+        title: 'Tawaf (7 putaran)',
+        doa: `Niat tawaf: Allahumma inni atawaffa'u bihadzal-baiti lillahi ta'ala.\nBila menghadap Hajar Aswad: Laa ilaaha illallaah. \nDoa umum tawaf: Rabbana atina fiddunya hasanah wa fil akhirati hasanah.`,
+      },
+      {
+        id: 'sa\'i',
+        title: "Sa'i (Shafa - Marwa)",
+        doa: `Doa saat Sa'i: Ya Allah, terimalah usaha kami dan berikan taufik.\nDoa pendek: Laa ilaaha illallaah.`,
+      },
+      {
+        id: 'halq',
+        title: 'Tahallul (Potong rambut)',
+        doa: `Doa tahallul: Alhamdulillah hamdan katsiran tayyiban mubarakan fih.\nDoa ringkas: Subhanallah, Alhamdulillah, Allahu Akbar.`,
+      },
+      {
+        id: 'selesai',
+        title: 'Selesai',
+        doa: `Doa penutup: Taqabbalallahu minna wa minkum. Ya Allah terimalah ibadah kami dan ampunilah kami.`,
+      }
+    ];
+
+    // --- UI refs ---
+    const stepsList = document.getElementById('stepsList');
+    const doaText = document.getElementById('doaText');
+    const prevBtn = document.getElementById('prevStep');
+    const nextBtn = document.getElementById('nextStep');
+    const saveBtn = document.getElementById('saveBtn');
+    const loadBtn = document.getElementById('loadBtn');
+
+    // --- Storage key & initial state ---
+    const STORAGE_KEY = 'virtual-umroh-v1';
+    let state = { index: 0, autoTalbiyah: false, stepAudios: {} };
+
+    // --- Talbiyah global audio (autoplay using your link) ---
+    const TALBIYAH_URL = "https://www.naataudio.com/downloads/IslamicRingtones/Labbaik_allahuma.mp3";
+    let talbiyahAudio = new Audio(TALBIYAH_URL);
+    talbiyahAudio.loop = true;
+    talbiyahAudio.autoplay = true;
+    talbiyahAudio.volume = Number(document.getElementById('volume').value || 0.9);
+
+    // ensure user gesture if autoplay blocked
+    document.getElementById('playTalbiyah').addEventListener('click', ()=> talbiyahAudio.play().catch(()=>{}));
+    document.getElementById('stopTalbiyah').addEventListener('click', ()=> { talbiyahAudio.pause(); talbiyahAudio.currentTime = 0; });
+
+    // allow user upload overrides for talbiyah
+    document.getElementById('uploadTalbiyah').addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const url = URL.createObjectURL(f);
+      talbiyahAudio.src = url; talbiyahAudio.play().catch(()=>{});
+      Swal.fire({icon:'success', title:'Talbiyah Terunggah', text: f.name});
+    });
+
+    // volume & loop control
+    document.getElementById('volume').addEventListener('input', (e)=>{
+      talbiyahAudio.volume = Number(e.target.value);
+      if(window.__currentDoaAudio) window.__currentDoaAudio.volume = Number(e.target.value);
+    });
+    document.getElementById('loopTalbiyah').addEventListener('change', (e)=> talbiyahAudio.loop = e.target.checked);
+
+    // --- render steps ---
+    function renderSteps(){
+      stepsList.innerHTML = '';
+      STEPS.forEach((s,i)=>{
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-start';
+        if(i===state.index) li.classList.add('active');
+        li.innerHTML = `<div class="ms-2 me-auto"><div class="fw-bold">${s.title}</div></div>`;
+        li.addEventListener('click', ()=> goto(i));
+        stepsList.appendChild(li);
+      });
+      doaText.textContent = STEPS[state.index].doa;
+    }
+
+    // --- play doa for current step: custom audio if uploaded; otherwise TTS ---
+    function playDoaForStep(){
+      const step = STEPS[state.index];
+      const stepAudioUrl = state.stepAudios && state.stepAudios[step.id];
+      // stop previous
+      window.speechSynthesis.cancel();
+      if(window.__currentDoaAudio){ try{ window.__currentDoaAudio.pause(); }catch(e){} window.__currentDoaAudio = null; }
+      if(stepAudioUrl){
+        const pa = new Audio(stepAudioUrl); pa.volume = Number(document.getElementById('volume').value); pa.play().catch(()=>{});
+        window.__currentDoaAudio = pa;
+      } else {
+        if('speechSynthesis' in window && document.getElementById('useTTS').checked){
+          const u = new SpeechSynthesisUtterance(step.doa);
+          u.lang = 'id-ID'; u.rate = 0.95; window.speechSynthesis.speak(u);
+        }
+      }
+    }
+
+    // --- goto step ---
+    function goto(index){
+      state.index = Math.max(0, Math.min(STEPS.length-1, index));
+      renderSteps();
+      saveProgressAuto();
+      // if autoTalbiyah toggled, play talbiyah for certain steps (e.g., niat & tawaf)
+      if(state.autoTalbiyah && (state.index === 0 || state.index === 1)){
+        talbiyahAudio.play().catch(()=>{});
+      }
+      // play doa for this step automatically
+      setTimeout(()=> playDoaForStep(), 250);
+    }
+
+    prevBtn.addEventListener('click', ()=> goto(state.index-1));
+    nextBtn.addEventListener('click', ()=> goto(state.index+1));
+    document.getElementById('prevBottom').addEventListener('click', ()=> goto(state.index-1));
+    document.getElementById('nextBottom').addEventListener('click', ()=> goto(state.index+1));
+    document.getElementById('playBottom').addEventListener('click', ()=> playDoaForStep());
+
+    // --- upload doa audio for current step (file input created dynamically) ---
+    const doaUpload = document.createElement('input');
+    doaUpload.type = 'file'; doaUpload.accept = 'audio/*'; doaUpload.style.display = 'none';
+    doaUpload.addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const url = URL.createObjectURL(f);
+      state.stepAudios[STEPS[state.index].id] = url;
+      saveProgressAuto();
+      Swal.fire({icon:'success', title:'Audio Doa Terunggah', text: 'Langkah: '+STEPS[state.index].title});
+    });
+    document.body.appendChild(doaUpload);
+    document.getElementById('uploadDoaBtn').addEventListener('click', ()=> doaUpload.click());
+
+    // --- save/load progress to localStorage ---
+    function saveProgress(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      Swal.fire({icon:'success', title:'Tersimpan', text:'Progres disimpan di browser.'});
+    }
+    function loadProgress(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){ Swal.fire({icon:'info', title:'Kosong', text:'Tidak ada progres tersimpan.'}); return; }
+      try {
+        const parsed = JSON.parse(raw);
+        state = Object.assign(state, parsed);
+        renderSteps();
+        Swal.fire({icon:'success', title:'Dimuat', text:'Progres dimuat.'});
+      } catch(e){
+        Swal.fire({icon:'error', title:'Gagal', text:'Tidak dapat memuat progres.'});
+      }
+    }
+    function saveProgressAuto(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+    saveBtn.addEventListener('click', saveProgress);
+    loadBtn.addEventListener('click', loadProgress);
+
+    // Toggle auto talbiyah
+    const toggleAuto = document.getElementById('toggleAutoTalbiyah');
+    toggleAuto.addEventListener('click', ()=>{
+      state.autoTalbiyah = !state.autoTalbiyah;
+      toggleAuto.classList.toggle('btn-success', state.autoTalbiyah);
+      toggleAuto.classList.toggle('btn-outline-info', !state.autoTalbiyah);
+      saveProgressAuto();
+      Swal.fire({icon:'info', title:'Auto Talbiyah', text: state.autoTalbiyah ? 'Aktif' : 'Nonaktif'});
+    });
+
+    // Enter VR button
+    document.getElementById('enterVr').addEventListener('click', ()=>{
+      const scene = document.querySelector('a-scene');
+      if(scene && scene.enterVR) { try{ scene.enterVR(); } catch(e){ Swal.fire({icon:'error', title:'Gagal VR', text: e.message}); } }
+      else { Swal.fire({icon:'info', title:'Mode VR', text:'Mode VR mungkin tersedia jika perangkat Anda mendukung WebXR.'}); }
+    });
+
+    // Init: load any saved state silently
+    (function init(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(raw) state = Object.assign(state, JSON.parse(raw));
+      }catch(e){}
+      renderSteps();
+      goto(state.index || 0);
+    })();
+
+    // expose helpers for debugging / power users
+    window.__virtualUmroh = { state, goto, saveProgress, loadProgress };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

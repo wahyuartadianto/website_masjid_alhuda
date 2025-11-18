@@ -1,0 +1,588 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Umrah Digital</title>
+
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Memuat SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Memuat Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Menggunakan font Inter sebagai default */
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Mencegah overscroll "mental" di iOS */
+            overscroll-behavior: none;
+        }
+        /* Style untuk lafadz Arab */
+        
+        .arabic {
+            font-size: 1.5rem;
+            /* 24px */
+            font-weight: 500;
+            line-height: 2.5rem;
+            /* 40px */
+            direction: rtl;
+        }
+        /* Sembunyikan konten accordion secara default */
+        
+        .accordion-content {
+            display: none;
+        }
+        /* Navigasi Bawah Aktif (BLOK INI DIHAPUS, AKAN DIGANTI DENGAN JS) */
+        /* .nav-btn.active {
+            color: #059669; /* text-green-700 */
+        /* } */
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Kontainer utama, dibuat agar pas di layar mobile (max-w-lg) -->
+    <!-- `relative` diperlukan untuk menampung nav bottom `fixed` di dalamnya -->
+    <div class="container mx-auto max-w-lg bg-white min-h-screen shadow-xl relative">
+
+        <!-- Header Aplikasi -->
+        <header class="bg-green-700 text-white p-5 rounded-b-lg shadow-md sticky top-0 z-10">
+            <h1 class="text-2xl font-bold text-center">Panduan Umrah Digital</h1>
+            <p id="header-subtitle" class="text-center text-sm">Panduan tata cara, rukun, dan bacaan.</p>
+        </header>
+
+        <!-- Konten Utama (Area Tab) -->
+        <!-- Diberi padding bawah (pb-24) agar tidak tertutup nav bottom -->
+        <!-- pb-24 dipindahkan dari <main> ke setiap tab-content di bawah -->
+        <main>
+
+            <!-- TAB 1: PANDUAN (Aktif by default) -->
+            <!-- Menambahkan pb-24 di sini -->
+            <div id="tab-guide" class="tab-content p-4 space-y-4 pb-24">
+
+                <!-- 1. Rukun Umrah (Ringkasan) -->
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h2 class="text-xl font-bold text-green-800 mb-2">Rukun Umrah</h2>
+                    <p class="text-gray-700">Rukun umrah adalah amalan inti yang jika ditinggalkan, umrahnya tidak sah. Terdiri dari:</p>
+                    <ol class="list-decimal list-inside mt-2 space-y-1 text-gray-700">
+                        <li><strong>Ihram (Niat):</strong> Berniat memulai umrah dari Miqat.</li>
+                        <li><strong>Tawaf:</strong> Mengelilingi Ka'bah 7 kali putaran.</li>
+                        <li><strong>Sa'i:</strong> Berjalan/berlari kecil antara bukit Safa dan Marwa 7 kali.</li>
+                        <li><strong>Tahallul:</strong> Memotong sebagian rambut kepala.</li>
+                        <li><strong>Tertib:</strong> Melakukan rukun secara berurutan.</li>
+                    </ol>
+                </div>
+
+                <!-- Bagian Accordion untuk Detail -->
+
+                <!-- Item 1: Persiapan & Ihram -->
+                <div class="border rounded-lg overflow-hidden shadow-sm">
+                    <button class="accordion-header w-full p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center text-left">
+                        <span class="text-lg font-semibold text-gray-800">1. Persiapan & Niat Ihram</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content p-4 border-t bg-white space-y-3">
+                        <p>Sebelum berniat Ihram di Miqat (batas tempat), disunnahkan untuk:</p>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li>Mandi besar (junub) dan berwudhu.</li>
+                            <li>Memakai wangi-wangian (bagi pria, di badan, bukan di kain ihram).</li>
+                            <li>Memakai pakaian ihram (dua lembar kain putih tanpa jahitan bagi pria, dan pakaian menutup aurat kecuali wajah & telapak tangan bagi wanita).</li>
+                            <li>Shalat sunnah Ihram 2 rakaat.</li>
+                        </ul>
+                        <p class="font-semibold">Niat Umrah di Miqat:</p>
+                        <p class="arabic text-gray-800">لَبَّيْكَ اللَّهُمَّ عُمْرَةً</p>
+                        <p class="italic">"Labbaik-Allahumma 'umratan."</p>
+                        <p class="text-gray-600">Artinya: "Aku sambut panggilan-Mu ya Allah untuk menunaikan umrah."</p>
+                        <p>Atau niat:</p>
+                        <p class="arabic text-gray-800">نَوَيْتُ الْعُمْرَةَ وَأَحْرَمْتُ بِهَا لِلَّهِ تَعَالَى</p>
+                        <p class="italic">"Nawaitul 'umrata wa ahramtu bihaa lillaahi ta'aalaa."</p>
+                        <p class="text-gray-600">Artinya: "Aku niat umrah dan berihram karenanya karena Allah Ta'ala."</p>
+                        <p class="mt-4">Setelah berniat, mulailah memperbanyak bacaan <strong>Talbiyah</strong>:</p>
+                        <div class="bg-gray-50 p-3 rounded-md">
+                            <p class="arabic text-gray-800">لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لاَ شَرِيْكَ لَكَ لَبَّيْكَ، إِنَّ الْH</div>َمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لاَ شَرِيْكَ لَكَ</p>
+                        <p class="italic">"Labbaikallahumma labbaik, labbaika laa syariika laka labbaik. Innal hamda wan ni'mata laka wal mulk, laa syariika lak."</p>
+                    </div>
+                    <button data-step="ihram" class="checklist-btn w-full mt-4 p-3 rounded-lg text-white font-semibold transition-all duration-300">
+                            Tandai Selesai
+                        </button>
+                </div>
+            </div>
+
+            <!-- Item 2: Tawaf -->
+            <div class="border rounded-lg overflow-hidden shadow-sm">
+                <button class="accordion-header w-full p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center text-left">
+                        <span class="text-lg font-semibold text-gray-800">2. Tawaf</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                <div class="accordion-content p-4 border-t bg-white space-y-3">
+                    <p>Tawaf adalah mengelilingi Ka'bah sebanyak 7 kali putaran, dimulai dan diakhiri di Hajar Aswad (batu hitam).</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Pastikan dalam keadaan suci (berwudhu).</li>
+                        <li>Posisi Ka'bah ada di sebelah kiri Anda.</li>
+                        <li><strong>Putaran 1-3:</strong> Pria disunnahkan berlari kecil (Raml).</li>
+                        <li><strong>Putaran 4-7:</strong> Berjalan biasa.</li>
+                        <li>Setiap melewati Rukun Yamani (sudut sebelum Hajar Aswad), usap jika mampu (tanpa mencium) atau cukup beri isyarat.</li>
+                        <li>Setiap melewati Hajar Aswad, beri isyarat dengan tangan kanan dan ucapkan: <br><strong class="italic">"Bismillahi Allahu Akbar."</strong></li>
+                    </ul>
+                    <p class="font-semibold">Doa di antara Rukun Yamani & Hajar Aswad:</p>
+                    <div class="bg-gray-50 p-3 rounded-md">
+                        <p class="arabic text-gray-800">رَبَّنَا آتِنَا فِى الدُّنْيَا حَسَنَةً وَفِى الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</p>
+                        <p class="italic">"Rabbanaa aatinaa fid-dunyaa hasanatan wa fil-aakhirati hasanatan wa qinaa 'adzaaban-naar."</p>
+                    </div>
+                    <p class="mt-2">Tidak ada doa khusus untuk setiap putaran. Anda bebas berdzikir, membaca Al-Qur'an, atau berdoa apa saja.</p>
+                    <p class="mt-2">Setelah 7 putaran, shalat sunnah Tawaf 2 rakaat di belakang Maqam Ibrahim jika memungkinkan.</p>
+                    <button data-step="tawaf" class="checklist-btn w-full mt-4 p-3 rounded-lg text-white font-semibold transition-all duration-300">
+                            Tandai Selesai
+                        </button>
+                </div>
+            </div>
+
+            <!-- Item 3: Sa'i -->
+            <div class="border rounded-lg overflow-hidden shadow-sm">
+                <button class="accordion-header w-full p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center text-left">
+                        <span class="text-lg font-semibold text-gray-800">3. Sa'i</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                <div class="accordion-content p-4 border-t bg-white space-y-3">
+                    <p>Sa'i adalah berjalan/berlari kecil antara bukit Safa dan Marwa sebanyak 7 kali.</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Sa'i tidak disyaratkan suci (boleh batal wudhu).</li>
+                        <li>Dimulai dari bukit Safa dan diakhiri di bukit Marwa.</li>
+                        <li>Perjalanan dari Safa ke Marwa dihitung 1 kali.</li>
+                        <li>Perjalanan dari Marwa ke Safa dihitung 1 kali.</li>
+                        <li>Total 7 kali perjalanan (berakhir di Marwa).</li>
+                        <li>Saat di Safa dan Marwa, menghadap Ka'bah dan berdoa.</li>
+                        <li>Di antara 2 pilar hijau (batas lembah), pria disunnahkan berlari kecil.</li>
+                    </ul>
+                    <p class="font-semibold">Doa saat di bukit Safa (awal Sa'i):</p>
+                    <div class="bg-gray-50 p-3 rounded-md">
+                        <p class="arabic text-gray-800">إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللَّهِ</p>
+                        <p class="italic">"Innash-shafaa wal marwata min sya'aairillaah..." (lanjutannya)</p>
+                        <p class="mt-2">Dilanjutkan takbir 3x dan doa bebas.</p>
+                    </div>
+                    <button data-step="sai" class="checklist-btn w-full mt-4 p-3 rounded-lg text-white font-semibold transition-all duration-300">
+                            Tandai Selesai
+                        </button>
+                </div>
+            </div>
+
+            <!-- Item 4: Tahallul -->
+            <div class="border rounded-lg overflow-hidden shadow-sm">
+                <button class="accordion-header w-full p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center text-left">
+                        <span class="text-lg font-semibold text-gray-800">4. Tahallul</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                <div class="accordion-content p-4 border-t bg-white space-y-3">
+                    <p>Tahallul adalah menghalalkan diri dari larangan ihram dengan cara memotong rambut.</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Bagi pria, lebih utama (afdhal) menggundul habis rambut (Taqshir). Boleh juga memendekkan/memotong sebagian (minimal 3 helai).</li>
+                        <li>Bagi wanita, cukup memotong sebagian rambut (minimal 3 helai) sepanjang satu ruas jari.</li>
+                    </ul>
+                    <p>Dengan bertahallul, selesailah rangkaian ibadah umrah dan semua larangan ihram tidak berlaku lagi.</p>
+                    <button data-step="tahallul" class="checklist-btn w-full mt-4 p-3 rounded-lg text-white font-semibold transition-all duration-300">
+                            Tandai Selesai
+                        </button>
+                </div>
+            </div>
+
+            <!-- Item 5: Larangan Ihram -->
+            <div class="border rounded-lg overflow-hidden shadow-sm">
+                <button class="accordion-header w-full p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center text-left">
+                        <span class="text-lg font-semibold text-gray-800">Larangan Selama Ihram</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                <div class="accordion-content p-4 border-t bg-white space-y-3">
+                    <p class="font-semibold">Hal-hal yang dilarang sejak berniat ihram sampai tahallul:</p>
+                    <p class="font-medium text-gray-800">Bagi Pria:</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Memakai pakaian berjahit (membentuk lekuk tubuh).</li>
+                        <li>Memakai tutup kepala (topi, peci, dll).</li>
+                        <li>Memakai alas kaki yang menutup mata kaki.</li>
+                    </ul>
+                    <p class="font-medium text-gray-800 mt-2">Bagi Wanita:</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Menutup wajah (memakai cadar/niqab).</li>
+                        <li>Memakai sarung tangan.</li>
+                    </ul>
+                    <p class="font-medium text-gray-800 mt-2">Bagi Pria & Wanita:</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Memakai wangi-wangian (parfum).</li>
+                        <li>Memotong kuku.</li>
+                        <li>Mencabut atau memotong rambut/bulu badan.</li>
+                        <li>Berburu binatang darat.</li>
+                        <li>Melakukan akad nikah, menikahkan, atau melamar.</li>
+                        <li>Bercumbu atau berhubungan suami-istri.</li>
+                        <li>Berkata kotor (rafats) atau bertengkar (jidal).</li>
+                    </ul>
+                </div>
+            </div>
+
+    </div>
+
+    <!-- TAB 2: WAKTU SHOLAT (Hidden by default) -->
+    <!-- Menambahkan pb-24 di sini -->
+    <div id="tab-pray" class="tab-content hidden p-4 space-y-4 pb-24">
+        <h2 class="text-xl font-bold text-green-800 mb-2">Waktu Sholat (Lokal)</h2>
+        <p id="location-info" class="text-gray-600 text-sm">Meminta izin lokasi...</p>
+
+        <!-- Kontainer untuk menampilkan waktu sholat -->
+        <div id="prayer-times-container" class="space-y-2">
+            <!-- Loading spinner -->
+            <div id="loading-spinner" class="flex justify-center items-center p-10">
+                <svg class="animate-spin h-8 w-8 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+            </div>
+            <!-- Waktu sholat akan diisi oleh JS di sini -->
+        </div>
+
+        <!-- TAB 3: PENGATUAN (Hidden by default) -->
+        <!-- Menambahkan pb-24 di sini -->
+        <div id="tab-settings" class="tab-content hidden p-4 space-y-4 pb-24">
+            <h2 class="text-xl font-bold text-green-800 mb-2">Pengaturan</h2>
+            <p class="text-gray-700">Gunakan tombol di bawah ini untuk mereset semua progres checklist rukun umrah Anda.</p>
+            <!-- Tombol Reset Progress dipindah ke sini -->
+            <div class="pt-4">
+                <button id="reset-btn" class="w-full p-3 rounded-lg bg-red-500 hover:bg-red-600 text-white font-semibold transition-all duration-300">
+                        Reset Semua Progress
+                    </button>
+            </div>
+        </div>
+
+        </main>
+
+        <!-- Navigasi Bawah Tetap (TAMPILAN BARU) -->
+        <!-- Blok <nav> DIHAPUS dari sini -->
+
+    </div>
+    <!-- Ini adalah penutup .container -->
+
+    <!-- Navigasi Bawah Tetap (TAMPILAN BARU) -->
+    <!-- Blok <nav> DIPINDAHKAN ke sini (di luar .container) -->
+    <!-- Ini memperbaiki bug 'position: fixed' yang tidak menempel di layar -->
+    <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white flex justify-around p-3 z-10 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] rounded-t-2xl">
+        <!-- Tombol Tab 1: Panduan -->
+        <button data-tab="guide" class="nav-btn flex flex-col items-center justify-center transition-colors duration-200 w-24">
+            <!-- Wrapper untuk 'pill' background -->
+            <div class="icon-wrapper p-3 rounded-full transition-colors duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6-4h.01M12 12h.01M15 12h.01M12 9h.01M15 9h.01M9 9h.01"></path></svg>
+            </div>
+            <span class="text-xs mt-1">Panduan</span>
+        </button>
+        <!-- Tombol Tab 2: Waktu Sholat -->
+        <button data-tab="pray" class="nav-btn flex flex-col items-center justify-center transition-colors duration-200 w-24">
+            <div class="icon-wrapper p-3 rounded-full transition-colors duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <span class="text-xs mt-1">Waktu Sholat</span>
+        </button>
+        <!-- Tombol Tab 3: Pengaturan -->
+        <button data-tab="settings" class="nav-btn flex flex-col items-center justify-center transition-colors duration-200 w-24">
+            <div class="icon-wrapper p-3 rounded-full transition-colors duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826 3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></M11 12a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+            </div>
+            <span class="text-xs mt-1">Pengaturan</span>
+        </button>
+    </nav>
+
+    <script>
+        const STORAGE_KEY = 'umrahChecklistApp';
+        let checklist = {};
+        let prayerTimesLoaded = false; // Flag untuk mencegah load berulang
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTabs();
+            initAccordion();
+            initChecklist();
+            initResetButton();
+
+            // Langsung load checklist UI
+            loadChecklist();
+        });
+
+        // --- Logika Navigasi Tab ---
+        function initTabs() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const tabs = document.querySelectorAll('.tab-content');
+            const headerSubtitle = document.getElementById('header-subtitle');
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetTab = btn.dataset.tab;
+
+                    // 1. Sembunyikan semua tab
+                    tabs.forEach(tab => tab.classList.add('hidden'));
+
+                    // 2. Tampilkan tab yang ditarget
+                    document.getElementById(`tab-${targetTab}`).classList.remove('hidden');
+
+                    // 3. Atur status aktif tombol nav (MODIFIKASI)
+                    updateNavUI(btn);
+
+                    // 4. Ubah Subjudul Header
+                    if (targetTab === 'guide') {
+                        headerSubtitle.innerText = 'Panduan tata cara, rukun, dan bacaan.';
+                    } else if (targetTab === 'pray') {
+                        headerSubtitle.innerText = 'Waktu Sholat Berdasarkan Lokasi Anda';
+                        // Jika belum dimuat, muat waktu sholat
+                        if (!prayerTimesLoaded) {
+                            loadPrayerTimes();
+                        }
+                    } else if (targetTab === 'settings') {
+                        headerSubtitle.innerText = 'Pengaturan Aplikasi';
+                    }
+                });
+            });
+
+            // Set initial active state for 'guide' tab (MODIFIKASI)
+            updateNavUI(document.querySelector('.nav-btn[data-tab="guide"]'));
+        }
+
+        // FUNGSI BARU UNTUK UPDATE TAMPILAN NAVIGASI
+        function updateNavUI(activeBtn) {
+            const navButtons = document.querySelectorAll('.nav-btn');
+
+            navButtons.forEach(btn => {
+                const iconWrapper = btn.querySelector('.icon-wrapper');
+                const text = btn.querySelector('span');
+
+                if (btn === activeBtn) {
+                    // --- State Aktif ---
+                    // Sesuai gambar: warna cerah (hijau) dan tebal
+                    btn.classList.add('text-green-700');
+                    btn.classList.remove('text-gray-400');
+                    text.classList.add('font-semibold');
+
+                    // Tambahkan "pill" di belakang ikon
+                    iconWrapper.classList.add('bg-green-100');
+                } else {
+                    // --- State Inaktif ---
+                    // Sesuai gambar: warna abu-abu
+                    btn.classList.remove('text-green-700');
+                    btn.classList.add('text-gray-400');
+                    text.classList.remove('font-semibold');
+
+                    // Hapus "pill"
+                    iconWrapper.classList.remove('bg-green-100');
+                }
+            });
+        }
+
+        // --- Logika Accordion ---
+        function initAccordion() {
+            const headers = document.querySelectorAll('.accordion-header');
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('svg');
+
+                    if (content.style.display === 'block') {
+                        content.style.display = 'none';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.display = 'block';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        }
+
+        // --- Logika Checklist (Local Storage) ---
+        function initChecklist() {
+            const checklistButtons = document.querySelectorAll('.checklist-btn');
+
+            checklistButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const step = btn.dataset.step;
+                    checklist[step] = !checklist[step]; // Toggle status
+
+                    saveChecklist();
+                    updateUI();
+
+                    if (checklist[step]) {
+                        Swal.fire({
+                            title: 'Alhamdulillah!',
+                            text: `Rukun "${step}" telah ditandai selesai.`,
+                            icon: 'success',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            });
+        }
+
+        // 1. Fungsi memuat data dari Local Storage
+        function loadChecklist() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            checklist = data ? JSON.parse(data) : {};
+            updateUI();
+        }
+
+        // 2. Fungsi menyimpan data ke Local Storage
+        function saveChecklist() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(checklist));
+        }
+
+        // 3. Fungsi update tampilan tombol checklist
+        function updateUI() {
+            const checklistButtons = document.querySelectorAll('.checklist-btn');
+            checklistButtons.forEach(btn => {
+                const step = btn.dataset.step;
+                if (checklist[step]) {
+                    // Jika sudah selesai
+                    btn.innerHTML = `
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Selesai
+                    `;
+                    btn.classList.add('bg-green-600');
+                    btn.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                } else {
+                    // Jika belum selesai
+                    btn.innerHTML = `
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Tandai Selesai
+                    `;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                }
+            });
+        }
+
+        // --- Logika Tombol Reset ---
+        function initResetButton() {
+            document.getElementById('reset-btn').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Anda yakin?',
+                    text: "Ini akan menghapus semua progress checklist Anda.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, reset!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        localStorage.removeItem(STORAGE_KEY);
+                        checklist = {};
+                        updateUI();
+                        Swal.fire(
+                            'Direset!',
+                            'Progress Anda telah direset.',
+                            'success'
+                        );
+                        // Tidak perlu reload, cukup update UI
+                    }
+                })
+            });
+        }
+
+        // --- Logika Waktu Sholat (Geolocation & API) ---
+        function loadPrayerTimes() {
+            prayerTimesLoaded = true; // Tandai sudah pernah mencoba load
+            const locationInfo = document.getElementById('location-info');
+            const prayerContainer = document.getElementById('prayer-times-container');
+            const prayerError = document.getElementById('prayer-error');
+            const loadingSpinner = document.getElementById('loading-spinner');
+
+            locationInfo.innerText = "Mendeteksi lokasi Anda...";
+            loadingSpinner.classList.remove('hidden');
+            prayerError.classList.add('hidden');
+            prayerContainer.innerHTML = ''; // Kosongkan dulu
+            prayerContainer.appendChild(loadingSpinner); // Tampilkan spinner
+
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    // 1. Sukses mendapatkan lokasi
+                    async(position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+
+                        try {
+                            // Menggunakan method 2 (Kemenag RI)
+                            const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`);
+
+                            if (!response.ok) {
+                                throw new Error('Gagal mengambil data dari API.');
+                            }
+
+                            const data = await response.json();
+                            const timings = data.data.timings;
+                            const date = data.data.date.readable;
+                            const timezone = data.data.meta.timezone;
+
+                            locationInfo.innerText = `Waktu untuk tanggal ${date} (${timezone})`;
+                            loadingSpinner.classList.add('hidden');
+
+                            // Daftar sholat yang ingin ditampilkan
+                            const prayerNames = {
+                                "Fajr": "Subuh",
+                                "Dhuhr": "Dzuhur",
+                                "Asr": "Ashar",
+                                "Maghrib": "Maghrib",
+                                "Isha": "Isya"
+                            };
+
+                            let html = '';
+                            for (const [key, name] of Object.entries(prayerNames)) {
+                                html += `
+                                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow-sm">
+                                        <span class="text-lg font-medium text-gray-800">${name}</span>
+                                        <span class="text-xl font-bold text-green-700">${timings[key]}</span>
+                                    </div>
+                                `;
+                            }
+                            prayerContainer.innerHTML = html;
+
+                        } catch (err) {
+                            showError("Terjadi kesalahan saat mengambil data waktu sholat.");
+                        }
+                    },
+                    // 2. Gagal mendapatkan lokasi
+                    (error) => {
+                        let message = '';
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                message = "Anda menolak izin lokasi. Aktifkan izin lokasi di browser Anda untuk melihat waktu sholat.";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                message = "Informasi lokasi tidak tersedia.";
+                                break;
+                            case error.TIMEOUT:
+                                message = "Waktu permintaan lokasi habis.";
+                                break;
+                            default:
+                                message = "Terjadi kesalahan saat mengambil lokasi.";
+                                break;
+                        }
+                        showError(message);
+                    }
+                );
+            } else {
+                showError("Geolocation tidak didukung di browser Anda.");
+            }
+
+            function showError(message) {
+                locationInfo.innerText = "Gagal memuat waktu sholat.";
+                prayerError.innerText = message;
+                prayerError.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
