@@ -1,5 +1,7 @@
 **Website Resmi Masjid Al-Huda** 🕌
 
+![alt text](https://i.ibb.co.com/dsY7yxqJ/Screenshot-2026-06-27-185942.png?raw=true)
+
 Desain website modern dan responsif untuk Masjid Al-Huda. Dilengkapi dengan fitur lengkap yang mendukung pengelolaan masjid dan pelayanan jamaah secara digital.
 
 ### Fitur Utama
